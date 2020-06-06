@@ -3,14 +3,10 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import {FormsModule} from '@angular/forms';
-import {MultByPipe} from './pipes/mult-by.pipe';
-import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MultByPipe,
-    FilterPipe
   ],
   imports: [
     BrowserModule,

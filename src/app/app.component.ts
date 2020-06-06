@@ -1,41 +1,43 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Component} from '@angular/core';
+import {interval, Subscription} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
 
-export interface IPost {
-  title: string;
-  text: string;
-}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
 
-  /*создаем промис, который через 4 секунды будет резолвисться строкой*/
-  p: Promise<string> = new Promise<string>(resolve => {
-    setTimeout(() => {
-      resolve('promise resolved');
-    }, 4000);
-  });
+  /*создаем переменную с типом из библиотеки rxjs Subscription. и теперь в данную
+  переменную мы можем складыывать результат работы метода subscribe()*/
+  subscription: Subscription;
 
-  date$: Observable<Date> = new Observable(obs => {
-    setInterval(() => {
-      /*в Observable эмиттим новые данные*/
-      obs.next(new Date());
-    }, 1000);
-  });
+  constructor() {
 
-  /*переменная, которая будет хранить то значение, на которое мы подписались
-  в ngOnInit у Observable*/
-  date: Date
+    /*с помощью ф-и interval() из библиотеки rxjs мы создали новый RxJS-стрим, который
+    запускается каждую секунду. мы в результате получили объект у которого есть метод
+    subscribe(), который выдает нам какой-то результат в случае, если что-то произошло*/
+    const intervalStream$ = interval(1000);
 
-  /*при каждом subscribe получаем новую date и присваиваем ее переменной date. date$
-  пометили символом доллара, так как это стрим, стримы обрабатываются методом subscribe.
-  это сделано для реализации показа Observable без пайпа async*/
-  ngOnInit(): void {
-    this.date$.subscribe(date => {
-      this.date = date;
+    /*эта переменная отвечает за подписку. у нее есть метод pipe(), который принимает
+    в себя операторы библиотеки rxjs. каждый оператор - ф-я, которая принимает ф-ю, где
+    на каждой итерации мы получаем некоторое значение value, и в теле этой ф-и можем
+    это value изменять. операторы можно чейнить. далее после вызова метода pipe() мы
+    вызываем метод subscribe()*/
+    this.subscription = intervalStream$
+      .pipe(
+        filter(value => value % 2 === 0),
+        map(value => `Mapped value ${value}`)
+      )
+      .subscribe((value) => {
+      console.log(value);
     });
+  }
+
+  /*в данном методе мы обращаемся к переменной, отвечающей за подписку, и для того,
+  чтоб не было утечки памяти, в этом методе мы производим отписку*/
+  stop() {
+    this.subscription.unsubscribe();
   }
 }
