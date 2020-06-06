@@ -1,25 +1,16 @@
 <div class="container">
   <h1>Angular pipes</h1>
 
-  <p>{{10 | mult}}</p>
-  <p>{{10 | mult:10}}</p>
-  <p>{{10 | mult:3}}</p>
-  <p>{{10 | mult:5}}</p>
+  <!--так работает пайп async с промисами. пропадает необходимость
+  обрабатывать промис в then, чтоб получить из него данные того формата,
+  которые можно корректно отобразить на экране-->
+  <p>Wait for it... {{p | async}}</p>
 
-  <!--переключаем значение searchField для изменения свойства по которому будет фильтрация-->
-  <button class="btn" (click)="searchField = 'title'">title</button>
-  <button class="btn" (click)="searchField = 'text'">text</button>
+  <!--с помощью пайпа async нам не нужно обрабатывать Observable
+  в методе subscribe, получать эти данные и выводить на экран-->
+  <p>Date: {{date$ | async | date: 'HH:mm:ss'}}</p>
 
-  <hr>
-
-  <button class="btn" (click)="addPost()">добавить новый пост</button>
-
-  <input type="text" [(ngModel)]="search">
-
-  <!--пробегаемся по массиву постов и к каждому посту применяем свой пайп filter,
-  в который передаем значение поисковой строки и по какому параметру вести сравнение-->
-  <div *ngFor="let post of posts | filter:search:searchField" class="card">
-    <h2>{{post.title}}</h2>
-    <p>{{post.text}}</p>
-  </div>
+  <!--реализация Observable без пайпа async довольно громоздка: нужно создать переменную
+  для даты, подписаться на стрим и перезаписывать полученными данными эту переменную-->
+  <p>{{date | date: 'HH: mm: ss'}}</p>
 </div>
