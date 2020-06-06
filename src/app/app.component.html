@@ -1,14 +1,25 @@
 <div class="container">
-  <h1>Angular Directives</h1>
+  <h1>Angular pipes</h1>
 
-  <p appStyle="red" fontWeight="bold">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, iste.</p>
+  <p>{{10 | mult}}</p>
+  <p>{{10 | mult:10}}</p>
+  <p>{{10 | mult:3}}</p>
+  <p>{{10 | mult:5}}</p>
 
-  <button class="btn" (click)="isVisible = !isVisible">toggle</button>
+  <!--переключаем значение searchField для изменения свойства по которому будет фильтрация-->
+  <button class="btn" (click)="searchField = 'title'">title</button>
+  <button class="btn" (click)="searchField = 'text'">text</button>
 
-  <!--обращаемся к своей собственной структурной директиве-->
-  <div *appIfnot="!isVisible">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, molestias.</p>
+  <hr>
+
+  <button class="btn" (click)="addPost()">добавить новый пост</button>
+
+  <input type="text" [(ngModel)]="search">
+
+  <!--пробегаемся по массиву постов и к каждому посту применяем свой пайп filter,
+  в который передаем значение поисковой строки и по какому параметру вести сравнение-->
+  <div *ngFor="let post of posts | filter:search:searchField" class="card">
+    <h2>{{post.title}}</h2>
+    <p>{{post.text}}</p>
   </div>
-
-
 </div>
