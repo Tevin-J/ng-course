@@ -49,7 +49,10 @@ img {
   transition: opacity 0.2s ease-in;
   outline: none;
 }
-
+.btn-danger {
+  color: black;
+  background-color: red;
+}
 .btn:hover {
   opacity: 0.8;
 }
