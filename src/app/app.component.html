@@ -1,9 +1,20 @@
 <div class="container">
-  <h1>RxJS</h1>
+  <h1>Сервисы в Angular</h1>
+  <div>
+    <p>Counter value: {{appCounterService.counter}}</p>
 
-  <!--при клике на кнопку производим отписку-->
-  <button class="btn" (click)="stop()">stop interval</button>
+    <button class="btn" (click)="appCounterService.increase()">+</button>
+    <button class="btn" (click)="appCounterService.decrease()">-</button>
+  </div>
+  <div>
+    <p>Local counter value: {{localCounterService.counter}}</p>
 
-  <!--при клике на кнопку увеличиваем значение счетчика и эмиттим событие в subscribe-->
-  <button class="btn btn-danger" (click)="myNext()">next value</button>
+    <button class="btn" (click)="localCounterService.increase()">+</button>
+    <button class="btn" (click)="localCounterService.decrease()">-</button>
+  </div>
+
+  <hr>
+
+  <app-counter></app-counter>
 </div>
+
