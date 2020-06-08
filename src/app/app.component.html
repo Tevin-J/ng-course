@@ -1,20 +1,85 @@
 <div class="container">
-  <h1>Сервисы в Angular</h1>
-  <div>
-    <p>Counter value: {{appCounterService.counter}}</p>
+  <!--чтоб связать шаблон формы с ts-формой, нужно в директиву formGroup
+  добавить форму из ts. на сабмит формы вызываем метод submit()-->
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Angular Forms</h1>
 
-    <button class="btn" (click)="appCounterService.increase()">+</button>
-    <button class="btn" (click)="appCounterService.decrease()">-</button>
-  </div>
-  <div>
-    <p>Local counter value: {{localCounterService.counter}}</p>
+    <div class="form-control">
+      <label>Email</label>
+      <!--чтоб добавить контрол для инпута, нужно в шаблоне прописать имя контрола в аттрибут formControlName-->
+      <input type="text" placeholder="Email" formControlName="email">
+      <div class="validation"></div>
+    </div>
+    <!--чтоб выводить различные сообщения об ошибках валидации инпутов, нужно создать отдельный
+    блок для этих сообщений и условно их отрисовывать. мы можем получить поле формы через метод
+    имя_формы.get('название_контрола').одно_из_состояний_инпута-->
+    <div
+      *ngIf="form.get('email').invalid && form.get('email').touched"
+      class="validation"
+    >
+      <!--условно отрисовываем одно из сообщений об ошибке валидации.
+      имя_формы.get('имя_контрола').errors.имя_ошибки-->
+      <small *ngIf="form.get('email').errors.required">Поле обязательно для заполнения</small>
+      <small *ngIf="form.get('email').errors.email">Введите корректный email</small>
+      <small *ngIf="form.get('email').errors.restrictedEmail">Email {{form.get('email').value}} запрещен</small>
+      <small *ngIf="form.get('email').errors.uniqEmail">Email {{form.get('email').value}} занят</small>
+    </div>
 
-    <button class="btn" (click)="localCounterService.increase()">+</button>
-    <button class="btn" (click)="localCounterService.decrease()">-</button>
-  </div>
+    <div class="form-control">
+      <label>Пароль</label>
+      <input type="password" placeholder="Пароль" formControlName="password">
+      <div class="validation"></div>
+    </div>
+    <div
+      *ngIf="form.get('password').invalid && form.get('password').touched"
+      class="validation"
+    >
+      <small *ngIf="form.get('password').errors.required">Поле обязательно для заполнения</small>
+      <small *ngIf="form.get('password').errors.minlength">Длина пароля должна быть не менее
+        {{form.get('password').errors.minlength.requiredLength}} символов. Сейчас введено
+        {{form.get('password').errors.minlength.actualLength}} символов.</small>
+    </div>
 
-  <hr>
+    <!--блоку, внутри которого хранятся контролы, которые мы хотим сгруппировать,
+    указываем аттрибут formGroupName='имя_группы'-->
+    <div class="card" formGroupName="address">
+      <h2>Адрес</h2>
 
-  <app-counter></app-counter>
+      <div class="form-control">
+        <label>Страна</label>
+
+        <!--и уже конкретному контролу из группы указываем аттрибут formControlName='имя_контрола'-->
+        <select formControlName="country">
+          <option value="ru">Россия</option>
+          <option value="ua">Украина</option>
+          <option value="by">Беларусь</option>
+        </select>
+      </div>
+
+      <div class="form-control">
+        <input type="text" formControlName="city" placeholder="Город">
+      </div>
+
+      <!--каждой кнопке формы нужно задать ее тип, должна быть кнопка с типом сабмит-->
+      <button class="btn" type="button" (click)="selectCapital()">Выбрать столицу</button>
+    </div>
+
+    <div class="card">
+      <h2>Ваши навыки</h2>
+      <button class="btn" type="button">Добавить умение</button>
+      <div class="form-control">
+        <label></label>
+        <input type="text">
+      </div>
+    </div>
+
+    <!--на кнопку с типом сабмит вешаем аттрибут disabled, которым будем блокировать форму-->
+    <button class="btn" type="submit" [disabled]="form.invalid">Отправить</button>
+
+  </form>
 </div>
+
+
+
+
 
