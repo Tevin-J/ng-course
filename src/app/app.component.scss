@@ -2,16 +2,3 @@ p {
   font-size: 1.5rem;
 }
 
-/*для визуализации форм Angular автоматически добавляет инпутам классы, говорящие о
-состоянии этих инпутов: ng-valid - ng-invalid, ng-touched - ng-untouched, ng-pristine - ng-dirty*/
-input {
-  &.ng-invalid.ng-touched {
-    border: 3px solid red;
-  }
-  &.ng-valid.ng-touched {
-    border: 3px solid green;
-  }
-}
-.validation small{
-  color: red;
-}
